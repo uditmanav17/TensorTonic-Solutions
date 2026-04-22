@@ -8,11 +8,7 @@ def global_avg_pool(x):
     Supports (C,H,W) => (C,) and (N,C,H,W) => (N,C).
     """
     # Write code here
-    dims = x.ndim
-    print(dims)
-    if dims == 3:
-        return np.mean(x, axis=(1, 2))
-    if dims == 4:
-        return np.mean(x, axis=(2, 3))
-    else:
-        raise ValueError("Mismatched dimensions!")
+    if x.ndim < 3:
+        raise ValueError("Input must have at least 3 dimensions")
+
+    return np.mean(x, axis=tuple(range(x.ndim - 2, x.ndim)))
