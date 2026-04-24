@@ -5,7 +5,7 @@ def zscore_standardize(X, axis=0, eps=1e-12):
     Standardize X: (X - mean)/std. If 2D and axis=0, per column.
     Return np.ndarray (float).
     """
-    # Write code here
-    mu = np.mean(X, axis=axis, keepdims=True)
+    mean = np.mean(X, axis=axis, keepdims=True)
     std = np.std(X, axis=axis, keepdims=True)
-    return (X - mu) / (std + eps)
+    normalized_x = (X - mean) / (std + eps)
+    return normalized_x
