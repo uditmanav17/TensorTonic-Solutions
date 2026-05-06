@@ -16,11 +16,11 @@ def contrastive_loss(a, b, y, margin=1.0, reduction="mean") -> float:
     # 1. Compute Euclidean distance
     D = np.linalg.norm(a - b, axis=-1)
     
-    # 2. Similar pairs (y=1 based on your editor's docstring)
+    # 2. Similar pairs 
     # If y=1, we want D to be 0
     similar_loss = y * np.square(D)
     
-    # 3. Dissimilar pairs (y=0 based on your editor's docstring)
+    # 3. Dissimilar pairs 
     # If y=0, we want D to be at least 'margin'
     dissimilar_loss = (1 - y) * np.square(np.maximum(0, margin - D))
     
