@@ -25,9 +25,3 @@ def train_logistic_regression(X, y, lr=0.1, steps=1000):
         W -= lr * dL_dW
         b -= lr * dL_db
     return W, b
-
-    
-    
-    
-    
-    pass
