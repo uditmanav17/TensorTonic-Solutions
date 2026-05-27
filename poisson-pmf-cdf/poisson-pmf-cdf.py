@@ -1,13 +1,12 @@
-import numpy as np
-from math import factorial
+
+from scipy import stats as sp_stat
 
 def poisson_pmf_cdf(lam, k):
     """
     Compute Poisson PMF and CDF.
     """
     # Write code here
-    cdf = 0
-    for i in range(k + 1):
-        pmf = np.exp(-lam) * lam ** i / factorial(i)
-        cdf += pmf
+    pmf = sp_stat.poisson.pmf(mu=lam, k=k)
+    cdf = sp_stat.poisson.cdf(mu=lam, k=k)
     return pmf, cdf
+    
