@@ -9,11 +9,14 @@ def pad_sequences(seqs, pad_value=0, max_len=None):
     # Your code here
     if max_len is None:
         max_len = max(len(seq) for seq in seqs)
+
     padded_seq = []
+    
     for seq in seqs:
         if len(seq) < max_len:
             seq = seq + [pad_value] * (max_len - len(seq))
         elif len(seq) > max_len:
             seq = seq[:max_len]
         padded_seq.append(seq)
+    
     return np.array(padded_seq)
