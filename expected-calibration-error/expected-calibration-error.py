@@ -4,27 +4,32 @@ def expected_calibration_error(y_true, y_pred, n_bins):
     """
     Compute Expected Calibration Error.
     """
-    n = len(y_true)
-    ece = 0.0
+    y_true = np.asarray(y_true)
+    y_prob = np.asarray(y_pred)
 
-    # Store labels and probabilities for each bin
-    bins = [[] for _ in range(n_bins)]
+    # Bin indices
+    bins = np.minimum((y_prob * n_bins).astype(int), n_bins - 1)
+    # print(bins)
 
-    for y, p in zip(y_true, y_pred):
-        if p == 1.0:
-            idx = n_bins - 1
-        else:
-            idx = int(p * n_bins)
-        bins[idx].append((y, p))
-
-    for b in bins:
-        if not b:
-            continue
-
-        size = len(b)
-        acc = sum(y for y, _ in b) / size
-        conf = sum(p for _, p in b) / size
-        ece += (size / n) * abs(acc - conf)
-
-    return ece
+    # Per-bin counts
+    counts = np.bincount(bins, minlength=n_bins)
+    # print(counts)
     
+    # Per-bin sums
+    sum_prob = np.bincount(bins, weights=y_prob, minlength=n_bins)
+    sum_true = np.bincount(bins, weights=y_true, minlength=n_bins)
+    # print(sum_prob)
+    # print(sum_true)
+    
+    # Means (avoid division by zero)
+    nonempty = counts > 0
+    conf = np.zeros(n_bins)
+    acc = np.zeros(n_bins)
+
+    conf[nonempty] = sum_prob[nonempty] / counts[nonempty]
+    acc[nonempty] = sum_true[nonempty] / counts[nonempty]
+
+    ece = np.sum((counts[nonempty] / len(y_true)) *
+                 np.abs(acc[nonempty] - conf[nonempty]))
+
+    return float(ece)
