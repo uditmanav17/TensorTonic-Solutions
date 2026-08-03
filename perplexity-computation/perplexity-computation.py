@@ -4,7 +4,6 @@ def perplexity(prob_distributions, actual_tokens):
     """
     Compute the perplexity of a token sequence given predicted distributions.
     """
-    # cross entropy
     H = 0
     for idx, tkn in enumerate(actual_tokens):
         H += np.log(prob_distributions[idx][tkn])
