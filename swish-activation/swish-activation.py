@@ -4,7 +4,6 @@ def swish(x):
     """
     Implement Swish activation function.
     """
-    # Write code here
-    x = np.array(x)
-    sigmoid = 1 / (1 + np.exp(-x))
-    return x * sigmoid
+    x = np.asarray(x)
+    sig_x = 1 / (1 + np.exp(-x))
+    return x * sig_x
