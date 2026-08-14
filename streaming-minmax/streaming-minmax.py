@@ -5,7 +5,6 @@ def streaming_minmax_init(D):
     """
     Initialize state dict with min, max arrays of shape (D,).
     """
-    # Write code here
     state = {
         "min": np.array([inf] * D),
         "max": np.array([-inf] * D),
