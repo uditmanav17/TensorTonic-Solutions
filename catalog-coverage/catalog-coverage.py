@@ -2,12 +2,9 @@ def catalog_coverage(recommendations: list, n_items: int) -> float:
     """
     Returns the fraction of catalog items that were recommended.
     """
-    # Write code here
     if n_items == 0:
         return 0
     
-    items = set()
-    for li in recommendations:
-        items = items.union(li)
+    recommended_items = set().union(*recommendations)
 
-    return len(items) / n_items
+    return len(recommended_items) / n_items
