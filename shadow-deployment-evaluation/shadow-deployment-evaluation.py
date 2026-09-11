@@ -1,49 +1,43 @@
-import math
+import numpy as np
+
 
 def evaluate_shadow(production_log: list, shadow_log: list, criteria: dict) -> dict:
-    """
-    Returns a dictionary with the promotion decision and metrics.
-    """
-    # Write code here
-    shadow_latencies = []
-    shadow_prod_agree = total = prod_correct = shadow_correct = 0
+    if len(production_log) != len(shadow_log):
+        raise ValueError("Production and shadow logs must have the same length")
 
-    for p_log, s_log in zip(production_log, shadow_log):
-        total += 1
-        shadow_latencies.append(s_log["latency_ms"])
-        if p_log["actual"] == p_log["prediction"]:
-            prod_correct += 1
-        if s_log["actual"] == s_log["prediction"]:
-            shadow_correct += 1
-        if p_log["prediction"] == s_log["prediction"]:
-            shadow_prod_agree += 1
+    if not production_log:
+        raise ValueError("Logs cannot be empty")
 
-    prod_acc = prod_correct / total
-    shad_acc = shadow_correct / total
-    acc_gain = shad_acc - prod_acc
+    p_actual = np.array([x["actual"] for x in production_log])
+    p_pred = np.array([x["prediction"] for x in production_log])
 
-    agree_rate = shadow_prod_agree / total
+    s_actual = np.array([x["actual"] for x in shadow_log])
+    s_pred = np.array([x["prediction"] for x in shadow_log])
 
-    shadow_latencies.sort()
-    rank = math.ceil(0.95 * total)
-    idx = rank - 1
-    p95 = shadow_latencies[idx]
+    latencies = np.array([x["latency_ms"] for x in shadow_log])
 
-    ans = {
-        "promote": all([
-            p95 <= criteria["max_latency_p95"],
-            acc_gain >= criteria["min_accuracy_gain"],
-            agree_rate >= criteria["min_agreement_rate"],
-        ]), 
-        "metrics": { 
-            "shadow_accuracy": shad_acc, 
-            "production_accuracy": prod_acc, 
-            "accuracy_gain": acc_gain, 
-            "shadow_latency_p95": p95, 
-            "agreement_rate": agree_rate
-        } 
+    production_accuracy = np.mean(p_actual == p_pred)
+    shadow_accuracy = np.mean(s_actual == s_pred)
+    agreement_rate = np.mean(p_pred == s_pred)
+
+    accuracy_gain = shadow_accuracy - production_accuracy
+
+    idx = int(np.ceil(0.95 * len(production_log))) - 1
+    p95 = np.partition(latencies, idx)[idx]
+
+    promote = (
+        p95 <= criteria["max_latency_p95"]
+        and accuracy_gain >= criteria["min_accuracy_gain"]
+        and agreement_rate >= criteria["min_agreement_rate"]
+    )
+
+    return {
+        "promote": bool(promote),
+        "metrics": {
+            "shadow_accuracy": float(shadow_accuracy),
+            "production_accuracy": float(production_accuracy),
+            "accuracy_gain": float(accuracy_gain),
+            "shadow_latency_p95": float(p95),
+            "agreement_rate": float(agreement_rate),
+        },
     }
-    return ans        
-
-        
-        
