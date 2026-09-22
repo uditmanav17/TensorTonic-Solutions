@@ -1,16 +1,10 @@
-def lag_features(series: list, lags: list) -> list:
+def lag_features(series, lags):
     """
     Returns the lag feature matrix.
     """
-    # Write code here
-    ans = []
-    for idx, val in enumerate(series):
-        temp = []
-        if idx < max(lags): continue
-        for idx2 in lags:
-            if idx - idx2 >= 0:
-                temp.append(series[idx - idx2])
-            else:
-                temp.append(None)
-        ans.append(temp)
-    return ans
+    max_lag = max(lags)
+    result = []
+    for t in range(max_lag, len(series)):
+        row = [series[t - lag] for lag in lags]
+        result.append(row)
+    return result
