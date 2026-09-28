@@ -27,6 +27,7 @@ Verified machine learning implementations completed on [TensorTonic](https://www
 | Implement Cosine Similarity | Compute cosine similarity between NumPy vectors with dot products, Euclidean norms, and zero-vector handling. | https://www.tensortonic.com/problems/cosine-similarity |
 | Compute Covariance Matrix | Compute a sample covariance matrix from centered observations, preserving feature-to-feature relationships. | https://www.tensortonic.com/problems/covariance-matrix |
 | Implement Cross-Entropy Loss | Compute multiclass cross-entropy loss from class probabilities and integer labels with stable logarithms. | https://www.tensortonic.com/problems/cross-entropy-loss |
+| Cumulative Returns | Convert a sequence of periodic returns into cumulative compounded returns at every time-series position. | https://www.tensortonic.com/problems/cumulative-returns |
 | Cyclic Encoding | Encode periodic numeric features as sine and cosine coordinates using a specified cycle length. | https://www.tensortonic.com/problems/cyclic-encoding |
 | Implement Dot Product | Implement the dot product of equal-length numeric vectors by summing element-wise products without library shortcuts. | https://www.tensortonic.com/problems/dot-product |
 | Double Exponential Smoothing | Apply Holt double exponential smoothing to a time series by updating level and trend components. | https://www.tensortonic.com/problems/double-exponential-smoothing |
